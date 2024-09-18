@@ -1,13 +1,13 @@
 # Specify the provider
 provider "aws" {
-  region = "us-east-1"  # 
+  region = "ap-south-1"
 }
 
 # Define a Security Group
 resource "aws_security_group" "all_sg" {
   name        = "all-sg"
   description = "Example security group"
-  vpc_id      = aws_vpc.app_vpc.id  # Replace with your VPC ID or remove if not using a VPC
+  vpc_id      = aws_vpc.app_vpc.id # Replace with your VPC ID or remove if not using a VPC
 
   ingress {
     from_port   = 0
