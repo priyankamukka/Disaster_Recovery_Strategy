@@ -1,3 +1,4 @@
+/*
 resource "aws_instance" "app_instance" {
   ami                  = "ami-049f0f6f51145ff40"
   instance_type        = "t2.micro"
@@ -17,20 +18,10 @@ resource "aws_instance" "app_instance" {
               systemctl start amazon-ssm-agent
               EOF
 }
-
-
-/*
-#from chatgpt
-# EC2 Instance (Application Server)
-resource "aws_instance" "app_instance" {
-  ami                         = "ami-0c55b159cbfafe1f0"  # Amazon Linux 2
-  instance_type               = "t2.micro"
-  subnet_id                   = aws_subnet.public_subnet.id
-  vpc_security_group_ids      = [aws_security_group.app_sg.id]
-  key_name                    = "my-key"
-
-  tags = {
-    Name = "App-Instance"
-  }
-}
 */
+
+resource "aws_instance" "app_instance" {
+  ami                   = "ami-0c55b159cbfafe1f0"
+  instance_type         = "t2.micro"
+  iam_instance_profile  = aws_iam_instance_profile.ssm_profile.name
+}
