@@ -1,41 +1,42 @@
 resource "aws_security_group" "ec2_sg" {
-  description = "launch-wizard-1 created 2024-09-20T18:28:59.958Z"
+  description = var.sg_description
+
   egress = [
     {
-      cidr_blocks = [
-        "0.0.0.0/0",
-      ]
-      description      = ""
-      from_port        = 0
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      protocol         = "-1"
-      security_groups  = []
-      self             = false
-      to_port          = 0
+      cidr_blocks       = var.egress_cidr_blocks
+      description       = var.egress_description
+      from_port         = var.egress_from_port
+      ipv6_cidr_blocks  = var.egress_ipv6_cidr_blocks
+      prefix_list_ids   = var.egress_prefix_list_ids
+      protocol          = var.egress_protocol
+      security_groups   = var.egress_security_groups
+      self              = var.egress_self
+      to_port           = var.egress_to_port
     },
   ]
+
   ingress = [
     {
-      cidr_blocks = [
-        "0.0.0.0/0",
-      ]
-      description      = ""
-      from_port        = 3389
-      ipv6_cidr_blocks = []
-      prefix_list_ids  = []
-      protocol         = "tcp"
-      security_groups  = []
-      self             = false
-      to_port          = 3389
+      cidr_blocks       = var.ingress_cidr_blocks
+      description       = var.ingress_description
+      from_port         = var.ingress_from_port
+      ipv6_cidr_blocks  = var.ingress_ipv6_cidr_blocks
+      prefix_list_ids   = var.ingress_prefix_list_ids
+      protocol          = var.ingress_protocol
+      security_groups   = var.ingress_security_groups
+      self              = var.ingress_self
+      to_port           = var.ingress_to_port
     },
   ]
-  name = "launch-wizard-1"
+
+  name   = var.sg_name
+  vpc_id = var.vpc_id
+
   tags = {
-    "Name" = "ec2-sg"
+    "Name" = var.tag_name
   }
+
   tags_all = {
-    "Name" = "ec2-sg"
+    "Name" = var.tag_name
   }
-  vpc_id = "vpc-0cf9c8bf976465e4f"
 }
