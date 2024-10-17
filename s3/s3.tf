@@ -1,6 +1,12 @@
+# S3 Bucket Resource with variables
 resource "aws_s3_bucket" "my_bucket" {
-  bucket = "mtechproj"
+  bucket = var.bucket_name
+  
   versioning {
-    enabled = true
+    enabled = var.versioning_enabled
+  }
+
+  tags = {
+    "Name" = var.bucket_name
   }
 }
