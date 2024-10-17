@@ -1,15 +1,16 @@
-
 resource "aws_instance" "application-server" {
-  ami           = "ami-053284fc22a2c3f82"
-  instance_type = "t2.micro"
+  ami           = var.ami_id
+  instance_type = var.instance_type
   security_groups = [
-    "launch-wizard-1",
+    aws_security_group.ec2_sg.name,
   ]
-  subnet_id = "subnet-01eedaf0a4fed5d13"
+  subnet_id = var.subnet_id
+
   tags = {
-    "Name" = "application-server"
+    "Name" = var.instance_name
   }
+
   tags_all = {
-    "Name" = "application-server"
+    "Name" = var.instance_name
   }
 }
