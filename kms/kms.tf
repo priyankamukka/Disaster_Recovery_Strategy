@@ -5,42 +5,22 @@ resource "aws_kms_key" "kms-key" {
 
   policy = jsonencode(
     {
-      Id = "key-consolepolicy-3"
+      Id = var.kms_policy_id
       Statement = [
         {
           Action = "kms:*"
           Effect = "Allow"
           Principal = {
-            AWS = "arn:aws:iam::851725542166:root"
+            AWS = var.root_user_arn
           }
           Resource = "*"
           Sid      = "Enable IAM User Permissions"
         },
         {
-          Action = [
-            "kms:Create*",
-            "kms:Describe*",
-            "kms:Enable*",
-            "kms:List*",
-            "kms:Put*",
-            "kms:Update*",
-            "kms:Revoke*",
-            "kms:Disable*",
-            "kms:Get*",
-            "kms:Delete*",
-            "kms:TagResource",
-            "kms:UntagResource",
-            "kms:ScheduleKeyDeletion",
-            "kms:CancelKeyDeletion",
-            "kms:RotateKeyOnDemand",
-          ]
+          Action = var.kms_allowed_actions
           Effect = "Allow"
           Principal = {
-            AWS = [
-              "arn:aws:iam::851725542166:role/service-role/AWSBackupDefaultServiceRole",
-              "arn:aws:iam::851725542166:role/aws-service-role/backup.amazonaws.com/AWSServiceRoleForBackup",
-              "arn:aws:iam::851725542166:role/ec2s3accessrole",
-            ]
+            AWS = var.kms_role_arns
           }
           Resource = "*"
           Sid      = "Allow access for Key Administrators"
@@ -53,6 +33,6 @@ resource "aws_kms_key" "kms-key" {
 
 # aws_kms_alias.kms-alias:
 resource "aws_kms_alias" "kms-alias" {
-  name          = "alias/kms-alias"
-  target_key_id = "216eec37-13aa-48ad-96b6-aff4e5f0271b"
+  name          = var.kms_alias_name
+  target_key_id = var.kms_key_id
 }
