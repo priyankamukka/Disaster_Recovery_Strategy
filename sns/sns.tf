@@ -1,7 +1,8 @@
-# aws_sns_topic.sns-backup:
-resource "aws_sns_topic" "sns-backup" {
-  display_name = "sns_notification"
-  name         = "BackupJobNotifications"
+# SNS Topic Resource
+resource "aws_sns_topic" "sns_backup" {
+  display_name = var.sns_display_name
+  name         = var.sns_name
+  
   policy = jsonencode(
     {
       Id = "__default_policy_ID"
@@ -10,14 +11,14 @@ resource "aws_sns_topic" "sns-backup" {
           Action = "SNS:Publish"
           Condition = {
             StringEquals = {
-              "AWS:SourceOwner" = "851725542166"
+              "AWS:SourceOwner" = var.source_owner
             }
           }
           Effect = "Allow"
           Principal = {
             Service = "backup.amazonaws.com"
           }
-          Resource = "arn:aws:sns:ap-south-1:851725542166:BackupJobNotifications",
+          Resource = var.sns_topic_arn,
           Sid      = "__default_statement_ID"
         },
       ]
