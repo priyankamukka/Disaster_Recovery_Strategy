@@ -1,31 +1,32 @@
+# Backup Plan Resource
 resource "aws_backup_plan" "backup_plan" {
-  name = "backup-plan"
+  name = var.backup_plan_name
 
   rule {
-    rule_name                = "DailyBackups"
-    target_vault_name        = "Default"
-    schedule                 = "cron(0 5 ? * * *)"
-    start_window             = 480
-    completion_window        = 10080
-    enable_continuous_backup = false
+    rule_name                = var.daily_backup_rule_name
+    target_vault_name        = var.daily_target_vault_name
+    schedule                 = var.daily_schedule
+    start_window             = var.daily_start_window
+    completion_window        = var.daily_completion_window
+    enable_continuous_backup = var.daily_enable_continuous_backup
 
     lifecycle {
-      cold_storage_after = 0
-      delete_after       = 35
+      cold_storage_after = var.daily_cold_storage_after
+      delete_after       = var.daily_delete_after
     }
   }
 
   rule {
-    rule_name                = "backup-rule"
-    target_vault_name        = "backup_vault"
-    schedule                 = "cron(5 12 ? * * *)"
-    start_window             = 60
-    completion_window        = 120
-    enable_continuous_backup = true
+    rule_name                = var.backup_rule_name
+    target_vault_name        = var.backup_target_vault_name
+    schedule                 = var.backup_schedule
+    start_window             = var.backup_start_window
+    completion_window        = var.backup_completion_window
+    enable_continuous_backup = var.backup_enable_continuous_backup
 
     lifecycle {
-      cold_storage_after = 0
-      delete_after       = 7
+      cold_storage_after = var.backup_cold_storage_after
+      delete_after       = var.backup_delete_after
     }
   }
 }
