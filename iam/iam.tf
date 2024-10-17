@@ -1,7 +1,7 @@
 # Create an IAM Role for EC2 to access S3
 resource "aws_iam_role" "ec2_s3_role" {
-  name        = "ec2s3accessrole"
-  description = "Allows EC2 instances to call AWS services on your behalf."
+  name        = var.ec2_s3_role_name
+  description = var.ec2_s3_role_description
 
   assume_role_policy = jsonencode(
     {
@@ -17,13 +17,12 @@ resource "aws_iam_role" "ec2_s3_role" {
       Version = "2012-10-17"
     }
   )
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-  ]
-  path = "/"
+  
+  managed_policy_arns = var.ec2_s3_managed_policy_arns
+  path = var.ec2_s3_role_path
 }
 
-# Create an IAM Role for s3 to access AWS Backup
+# Create an IAM Role for S3 to access AWS Backup
 resource "aws_iam_role" "BackupS3AccessRole" {
   assume_role_policy = jsonencode(
     {
@@ -39,30 +38,19 @@ resource "aws_iam_role" "BackupS3AccessRole" {
       Version = "2012-10-17"
     }
   )
-  description = "Allows AWS Backup to access AWS resources on your behalf based on the permissions you define."
-  managed_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonEventBridgeReadOnlyAccess",
-    "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-    "arn:aws:iam::aws:policy/CloudWatchReadOnlyAccess",
-  ]
-  name = "BackupS3AccessRole"
-  path = "/"
+  
+  description = var.backup_s3_role_description
+  managed_policy_arns = var.backup_s3_managed_policy_arns
+  name = var.backup_s3_role_name
+  path = var.backup_s3_role_path
 
   inline_policy {
-    name = "EventBridgePutRulePolicy"
+    name = var.backup_s3_inline_policy_name
     policy = jsonencode(
       {
         Statement = [
           {
-            Action = [
-              "events:PutRule",
-              "events:PutTargets",
-              "events:ListRules",
-              "events:ListTargetsByRule",
-              "events:DescribeRule",
-              "events:DeleteRule",
-              "events:RemoveTargets",
-            ]
+            Action = var.backup_s3_inline_policy_actions
             Effect   = "Allow"
             Resource = "*"
           },
@@ -72,18 +60,3 @@ resource "aws_iam_role" "BackupS3AccessRole" {
     )
   }
 }
-
-/*
-# Attach S3 Access Policy to the IAM Role
-resource "aws_iam_policy_attachment" "s3_access_policy" {
-  name       = "ec2-s3-access-attachment"
-  roles      = [aws_iam_role.ec2_s3_role.name]
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-}
-
-# Create an IAM Instance Profile for EC2
-resource "aws_iam_instance_profile" "ec2_instance_profile" {
-  name = "ec2-s3-instance-profile"
-  role = aws_iam_role.ec2_s3_role.name
-}
-*/

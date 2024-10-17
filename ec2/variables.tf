@@ -21,3 +21,9 @@ variable "subnet_id" {
   type        = string
   default     = "subnet-01eedaf0a4fed5d13"
 }
+
+variable "sg_name" {
+  description = "Name of the security group"
+  type        = string
+  default     = "launch-wizard-1"
+}

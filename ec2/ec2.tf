@@ -2,7 +2,7 @@ resource "aws_instance" "application-server" {
   ami           = var.ami_id
   instance_type = var.instance_type
   security_groups = [
-    aws_security_group.ec2_sg.name,
+    var.sg_name,
   ]
   subnet_id = var.subnet_id
 
