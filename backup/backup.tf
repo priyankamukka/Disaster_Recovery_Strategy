@@ -1,4 +1,3 @@
-# Backup Plan Resource
 resource "aws_backup_plan" "backup_plan" {
   name = var.backup_plan_name
 
