@@ -1,12 +1,21 @@
-# S3 Bucket Resource with variables
-resource "aws_s3_bucket" "my_bucket" {
-  bucket = var.bucket_name
-  
-  versioning {
-    enabled = var.versioning_enabled
-  }
+resource "aws_s3_bucket" "mtechproj" {
+  bucket = "mtechproj"
 
   tags = {
-    "Name" = var.bucket_name
+    Environment = "Production"
+  }
+
+  versioning {
+    enabled = true
+  }
+
+  server_side_encryption_configuration {
+    rule {
+      bucket_key_enabled = true
+
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
   }
 }

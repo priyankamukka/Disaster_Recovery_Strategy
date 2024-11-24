@@ -5,6 +5,7 @@
 # Terraform variable files
 *.tfvars
 terraform.tfvars
+.terraform.lock.hcl
 
 # Terraform directory
 .terraform/

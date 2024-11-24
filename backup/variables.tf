@@ -102,3 +102,9 @@ variable "backup_delete_after" {
   type        = number
   default     = 7
 }
+
+variable "iam_role_arn" {
+  description = "IAM role for backup selection"
+  type        = string
+  default     = "arn:aws:iam::851725542166:role/BackupS3AccessRole"  # Default value here
+}
